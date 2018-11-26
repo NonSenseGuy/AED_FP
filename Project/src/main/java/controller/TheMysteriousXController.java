@@ -25,30 +25,30 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-public class WormholesController implements Initializable{
-	
+public class TheMysteriousXController implements Initializable{
+
 	private Graph<String> graph;
 	
+    @FXML
+    private JFXButton createGraphBut;
+
+    @FXML
+    private JFXButton addCamaradeBut;
+
+    @FXML
+    private JFXButton addRelationBut;
+
     @FXML
     private JFXButton solveBut;
 
     @FXML
     private JFXButton backBut;
-    
-    @FXML
-    private JFXButton createGraphBut;
 
     @FXML
     private JFXListView<String> graphList;
 
     @FXML
     private JFXComboBox<String> graphReprBox;
-    
-    @FXML
-    private JFXButton addStarSysBut;
-    
-    @FXML
-    private JFXButton addWormholeBut;
 
     @FXML
     void createGraph(ActionEvent event) {
@@ -57,44 +57,35 @@ public class WormholesController implements Initializable{
     	}
     	else if(graphReprBox.getValue().equals("Adjacency list")) {
     		System.out.println("Adjacency list graph created");
-    		graph = new GraphAdjList<>(true, true);
-    		graph.addVertex("Solar system");
-    
+    		graph = new GraphAdjList<>(false, false);
+
     		
     	}else if(graphReprBox.getValue().equals("Adjacency matrix")){
     		System.out.println("Adjacency matrix graph created");
-    		int numVertices = Integer.parseInt(createInputDialog("Adjaceny graph matrix ","Amount of star systems that you are going to evaluate")); 
-    		graph = new GraphMatrix<>(numVertices, true, true);
-    		graph.addVertex("Solar system");
+    		int numVertices = Integer.parseInt(createInputDialog("Adjaceny graph matrix ","Amount of persons in the network")); 
+    		graph = new GraphMatrix<>(numVertices, false, false);
 
     	}
     	
     	if(graphReprBox.getValue() != null) {
-    		addStarSysBut.setDisable(false);
-    		addWormholeBut.setDisable(false);
-    		solveBut.setDisable(false);
+    		addCamaradeBut.setDisable(false);
+    		addRelationBut.setDisable(false);
     		graphReprBox.setDisable(true);
         	createGraphBut.setDisable(true);
     	}
     	updateGUI();
     }
-    
-    @FXML 
-    void solve(ActionEvent event) {
-    	Alert alert = new Alert(AlertType.INFORMATION);
-    	alert.setTitle("Solution");
-    	alert.setHeaderText("Is it possible to travel in time indefinitely");
-    	String res = "";
-    	if(!graph.bellmanford(graph.getVertex("Solar system"))) {
-    		res = "is possible";
-    	}else {
-    		res = "not possible";
-    	}
-    	alert.setContentText(res);
-    	alert.showAndWait();
+
+    @FXML
+    void addCamarade(ActionEvent event) {
     	
     }
-    
+
+    @FXML
+    void addRelation(ActionEvent event) {
+
+    }
+
     @FXML
     void goBack(ActionEvent event) {
     	try {
@@ -107,55 +98,41 @@ public class WormholesController implements Initializable{
     		e.printStackTrace();
     	}
     }
-    
-    @FXML
-    void addStarSystem(ActionEvent event) {
-    	String nameVertex = createInputDialog("Add star system", "Star system name");
-    	graph.addVertex(nameVertex);
-    	updateGUI();
-    	
-    }
 
     @FXML
-    void addWormhole(ActionEvent event) {
-    	String nameVertex1 = createInputDialog("Add a wormhole", "Enter the star system in which the wormhole starts");
-    	String nameVertes2 = createInputDialog("Add wormhole", "Enter the star system in wich the wormhole ends");
-    	int time = Integer.parseInt(createInputDialog("Add wormhole", "Enter the time it takes to travel through the wormhole"));
-    	graph.addEdge(graph.getVertex(nameVertex1), graph.getVertex(nameVertes2), time);
-    	updateGUI();
-    	
+    void solve(ActionEvent event) {
+
     }
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		graphReprBox.getItems().add("Adjacency list");
 		graphReprBox.getItems().add("Adjacency matrix");
-		addStarSysBut.setDisable(true);
-		addWormholeBut.setDisable(true);
-		solveBut.setDisable(true);
+		addCamaradeBut.setDisable(true);
+		addRelationBut.setDisable(true);
 		
 		
 		final Tooltip tooltip = new Tooltip();
 		tooltip.setText(
-		    "\nHere you can add a star system into the problem\n" +
-		    "in other words adds a vertex into the graph\n"  
+		    "\nHere you can add a person into the X network\n" +
+		    "in other words you can add a vertex into the graph\n"  
 		);
-		Image img = new Image(getClass().getResourceAsStream("/img/starSystem.jpg"), 100, 100, false, false);
+		Image img = new Image(getClass().getResourceAsStream("/img/user.png"), 100, 100, false, false);
 		tooltip.setGraphic(new ImageView(img));
-		addStarSysBut.setTooltip(tooltip);
+		addCamaradeBut.setTooltip(tooltip);
 		
 		final Tooltip wormholeTooltip = new Tooltip();
 		wormholeTooltip.setText(
-				"\n Here you can add a wormhole that connects two star systems\n" +
-				"in other words adds an edge into the grap\n Note: is a one way only edge"
+				"\n Here you can add an association between persons in the X network\n" +
+				"in other words you can add an edge between to vertices of the graph"
 				);
-		Image wormholeImg = new Image(getClass().getResourceAsStream("/img/wormhole.jpg"), 100, 100, false, false);
+		Image wormholeImg = new Image(getClass().getResourceAsStream("/img/user2.png"), 100, 100, false, false);
 		wormholeTooltip.setGraphic(new ImageView(wormholeImg));
-		addWormholeBut.setTooltip(wormholeTooltip);
+		addRelationBut.setTooltip(wormholeTooltip);
 		
 	}
 	
-	String createInputDialog(String title, String message) throws IllegalArgumentException{
+	String createInputDialog(String title, String message) {
 		TextInputDialog dialog = new TextInputDialog("");
 	    dialog.setTitle(title);
 	    dialog.setHeaderText(null);
@@ -170,12 +147,13 @@ public class WormholesController implements Initializable{
 	    	alert.showAndWait();
 	    	throw new IllegalArgumentException("");
 	    }
+    }
+	void updateGUI() {
+		if(graph != null) {
+			graphList.getItems().clear();
+			graphList.getItems().add(graph.toString());
+		}
 	}
-	  void updateGUI() {
-		  if(graph != null) {
-			 graphList.getItems().clear();
-			 graphList.getItems().add(graph.toString());
-		  }
-	  }
+
 
 }

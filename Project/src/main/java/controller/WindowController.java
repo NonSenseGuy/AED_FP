@@ -23,12 +23,12 @@ public class WindowController implements Initializable {
     private JFXButton buttonX;
     
     @FXML
-    void wormholes(ActionEvent event) {
+    synchronized void wormholes(ActionEvent event) {
     	try {
     		Parent root = FXMLLoader.load(getClass().getResource("/view/wormholes.fxml"));
         	Scene scene = new Scene(root);
         	Stage stage = (Stage) buttonW.getScene().getWindow();
-        	stage.setScene(scene);
+        	stage.setScene(scene);	
         	stage.show();
     	}catch(IOException e ) {
     		e.printStackTrace();
@@ -38,7 +38,15 @@ public class WindowController implements Initializable {
     
     @FXML
     void theMysteriousX(ActionEvent event) {
-    	
+    	try {
+    		Parent root = FXMLLoader.load(getClass().getResource("/view/the_mysterious_x.fxml"));
+        	Scene scene = new Scene(root);
+        	Stage stage = (Stage) buttonW.getScene().getWindow();
+        	stage.setScene(scene);	
+        	stage.show();
+    	}catch(IOException e ) {
+    		e.printStackTrace();
+    	}
     }
 
 	public void initialize(URL arg0, ResourceBundle arg1) {

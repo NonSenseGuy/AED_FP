@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="521.0" prefWidth="714.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.WormholesController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="521.0" prefWidth="714.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TheMysteriousXController">
    <children>
       <HBox alignment="CENTER_LEFT" layoutY="-7.0" prefHeight="100.0" prefWidth="600.0">
          <children>
@@ -18,8 +18,8 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="312.0" translateX="50.0" translateY="-7.0">
                <children>
-                  <JFXButton fx:id="addStarSysBut" onAction="#addStarSystem" text="Add star system" translateX="20.0" />
-                  <JFXButton fx:id="addWormholeBut" onAction="#addWormhole" text="Add wormhole" translateX="50.0" />
+                  <JFXButton fx:id="addCamaradeBut" onAction="#addCamarade" text="Add camarade" translateX="20.0" />
+                  <JFXButton fx:id="addRelationBut" onAction="#addRelation" text="Add relation" translateX="50.0" />
                </children>
             </HBox>
          </children>

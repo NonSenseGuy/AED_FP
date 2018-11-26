@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.text.*?>
 <?import com.jfoenix.controls.*?>
@@ -7,12 +10,33 @@
 <?import javafx.scene.layout.*?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.WindowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="521.0" prefWidth="714.0" style="-fx-background-color: #203447;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.WindowController">
    <children>
-      <VBox layoutX="1.0" layoutY="4.0" prefHeight="400.0" prefWidth="600.0">
+      <VBox layoutX="8.0" layoutY="6.0" prefHeight="510.0" prefWidth="699.0">
          <children>
-            <JFXButton fx:id="buttonW" onAction="#wormholes" prefHeight="199.0" prefWidth="599.0" text="Wormholes" />
-            <JFXButton fx:id="buttonX" onAction="#theMysteriousX" prefHeight="199.0" prefWidth="600.0" text="The mysterious X network" />
+            <JFXButton fx:id="buttonW" onAction="#wormholes" prefHeight="275.0" prefWidth="699.0" text="Wormholes" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Microsoft JhengHei" size="28.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+               <effect>
+                  <Lighting>
+                     <bumpInput>
+                        <Shadow />
+                     </bumpInput>
+                     <light>
+                        <Light.Distant />
+                     </light>
+                  </Lighting>
+               </effect>
+            </JFXButton>
+            <JFXButton fx:id="buttonX" onAction="#theMysteriousX" prefHeight="292.0" prefWidth="699.0" text="The mysterious X network" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Microsoft JhengHei" size="28.0" />
+               </font>
+            </JFXButton>
          </children>
       </VBox>
    </children>
