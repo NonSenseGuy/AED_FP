@@ -11,6 +11,8 @@ import com.jfoenix.controls.JFXListView;
 import genericGraphs.Graph;
 import genericGraphs.GraphAdjList;
 import genericGraphs.GraphMatrix;
+import genericGraphs.Vertex;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -53,19 +55,25 @@ public class WormholesController implements Initializable{
     @FXML
     void createGraph(ActionEvent event) {
     	if(graphReprBox.getValue() == null){
-    		System.out.println("Please select a graph representation");
+    		Alert alert = new Alert(AlertType.ERROR);
+    		alert.setContentText("Please select a graph representation first ");
+    		alert.showAndWait();
     	}
     	else if(graphReprBox.getValue().equals("Adjacency list")) {
-    		System.out.println("Adjacency list graph created");
     		graph = new GraphAdjList<>(true, true);
     		graph.addVertex("Solar system");
+    		Alert alert = new Alert(AlertType.INFORMATION);
+    		alert.setContentText("Adjacency list graph created");
+    		alert.showAndWait();
     
     		
     	}else if(graphReprBox.getValue().equals("Adjacency matrix")){
-    		System.out.println("Adjacency matrix graph created");
     		int numVertices = Integer.parseInt(createInputDialog("Adjaceny graph matrix ","Amount of star systems that you are going to evaluate")); 
     		graph = new GraphMatrix<>(numVertices, true, true);
     		graph.addVertex("Solar system");
+    		Alert alert = new Alert(AlertType.INFORMATION);
+    		alert.setContentText("Adjacency matrix graph created");
+    		alert.showAndWait();
 
     	}
     	
@@ -153,6 +161,16 @@ public class WormholesController implements Initializable{
 		wormholeTooltip.setGraphic(new ImageView(wormholeImg));
 		addWormholeBut.setTooltip(wormholeTooltip);
 		
+	    graphList.getSelectionModel().selectedItemProperty().addListener(
+	            (ObservableValue<? extends String> ov, String old_val, 
+	                String new_val) -> {
+	                	int endIndex = new_val.indexOf("-");
+	                    String vertex = new_val.substring(0, endIndex);
+	                    String vertex2 = createInputDialog("Add edge", "Add second vertex");
+	                    int w = Integer.parseInt(createInputDialog("Add edge", "Add the weight of the edge"));
+	                    graph.addEdge(graph.getVertex(vertex), graph.getVertex(vertex2),w);
+	                    updateGUI();
+	        });
 	}
 	
 	String createInputDialog(String title, String message) throws IllegalArgumentException{
@@ -171,11 +189,16 @@ public class WormholesController implements Initializable{
 	    	throw new IllegalArgumentException("");
 	    }
 	}
-	  void updateGUI() {
-		  if(graph != null) {
-			 graphList.getItems().clear();
-			 graphList.getItems().add(graph.toString());
-		  }
-	  }
+	
+	
+	void updateGUI() {
+		if(graph != null) {
+			graphList.getItems().clear();
+			for(Vertex<String> v: graph.getVertices()) {
+				String s = v + "-> " +	graph.getAdjacent(v).toString();
+				graphList.getItems().add(s);
+			}
+		}
+	}
 
 }

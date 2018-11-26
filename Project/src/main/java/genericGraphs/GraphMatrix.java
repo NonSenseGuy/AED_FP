@@ -1,7 +1,6 @@
 package genericGraphs;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -206,7 +205,7 @@ public class GraphMatrix<T> implements Graph<T>{
 						Vertex<T> v = verticesLookUp.get(i);
 						if(v.getColor() == Vertex.WHITE) {
 							v.setColor(Vertex.GRAY);
-							v.setD(u.getD());
+							v.setD(u.getD()+1);
 							v.setPred(u);
 							queue.offer(v);
 						}
@@ -257,6 +256,18 @@ public class GraphMatrix<T> implements Graph<T>{
 		int indexV2 = vertices.get(v2);
 		
 		return adjMatrix[indexV1][indexV2] == INF ? false:true;
+	}
+	
+	@Override
+	public ArrayList<Edge<T>> getAdjacent(Vertex<T> v){
+		int index = vertices.get(v.getValue());
+		ArrayList<Edge<T>> result = new ArrayList<Edge<T>>();
+		for(int i = 0; i < adjMatrix[index].length; i++) {
+			if(adjMatrix[index][i] != INF && adjMatrix[index][i] != 0) {
+				result.add(new Edge<T>(verticesLookUp.get(index),verticesLookUp.get(i),distMatrix[index][i]));
+			}
+		}
+		return result;
 	}
 	
 	public ArrayList<Vertex<T>> getAdjacentVertices(Vertex<T> v){

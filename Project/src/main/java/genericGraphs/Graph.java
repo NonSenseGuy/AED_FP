@@ -24,7 +24,7 @@ public interface Graph<T> {
 	public int getNumEdges();
 	public ArrayList<Edge<T>> kruskal();
 	public void prim(Vertex<T> s);
-	
+	public ArrayList<Edge<T>> getAdjacent(Vertex<T> s); 
 	
 	
 }

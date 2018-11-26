@@ -374,13 +374,14 @@ public class GraphAdjList<T> implements Graph<T>{
 		return false;
 	}
 	
-	public Set<Vertex<T>> adjacentVertices(Vertex<T> v) throws IllegalArgumentException{
+	@Override
+	public ArrayList<Edge<T>> getAdjacent(Vertex<T> v) throws IllegalArgumentException{
 		if(!adjList.containsKey(v)) {
 			throw new IllegalArgumentException("Vertex not found");
 		}
-		Set<Vertex<T>> adjVertices = new HashSet<Vertex<T>>();
+		ArrayList<Edge<T>> adjVertices = new ArrayList<Edge<T>>();
 		for(Edge<T> e: adjList.get(v)) {
-			adjVertices.add(e.endVertex());
+			adjVertices.add(e);
 		}
 		return adjVertices;
 	}
@@ -446,7 +447,7 @@ public class GraphAdjList<T> implements Graph<T>{
 		for(Vertex<T> v:getVertices()) {
 			s+= v + "={";
 			for(Edge<T> e: adjList.get(v)) {
-				s+= e.endVertex() + ", " + e.getWeight();
+				s+= "(" + e.endVertex() + ", " + e.getWeight() + ")";
 			}
 			s += "}\n";
 		}

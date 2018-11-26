@@ -11,6 +11,8 @@ import com.jfoenix.controls.JFXListView;
 import genericGraphs.Graph;
 import genericGraphs.GraphAdjList;
 import genericGraphs.GraphMatrix;
+import genericGraphs.Vertex;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -53,17 +55,23 @@ public class TheMysteriousXController implements Initializable{
     @FXML
     void createGraph(ActionEvent event) {
     	if(graphReprBox.getValue() == null){
-    		System.out.println("Please select a graph representation");
+    		Alert alert = new Alert(AlertType.ERROR);
+    		alert.setContentText("Please select a graph representation first ");
+    		alert.showAndWait();
     	}
     	else if(graphReprBox.getValue().equals("Adjacency list")) {
-    		System.out.println("Adjacency list graph created");
     		graph = new GraphAdjList<>(false, false);
+    		Alert alert = new Alert(AlertType.INFORMATION);
+    		alert.setContentText("Adjacency list graph created");
+    		alert.showAndWait();
 
     		
     	}else if(graphReprBox.getValue().equals("Adjacency matrix")){
-    		System.out.println("Adjacency matrix graph created");
     		int numVertices = Integer.parseInt(createInputDialog("Adjaceny graph matrix ","Amount of persons in the network")); 
     		graph = new GraphMatrix<>(numVertices, false, false);
+    		Alert alert = new Alert(AlertType.INFORMATION);
+    		alert.setContentText("Adjacency matrix graph created");
+    		alert.showAndWait();
 
     	}
     	
@@ -78,12 +86,17 @@ public class TheMysteriousXController implements Initializable{
 
     @FXML
     void addCamarade(ActionEvent event) {
-    	
+    	String nameVertex = createInputDialog("Add a camarade", "Camarade name");
+    	graph.addVertex(nameVertex);
+    	updateGUI();
     }
 
     @FXML
     void addRelation(ActionEvent event) {
-
+    	String nameVertex1 = createInputDialog("Add a relation", "Enter a camarade name");
+    	String nameVertex2 = createInputDialog("Add relation", "Enter a camarade name");
+    	graph.addEdge(graph.getVertex(nameVertex1), graph.getVertex(nameVertex2));
+    	updateGUI();
     }
 
     @FXML
@@ -101,7 +114,14 @@ public class TheMysteriousXController implements Initializable{
 
     @FXML
     void solve(ActionEvent event) {
-
+    	String camarade1 = createInputDialog("Solution", "Digit the name of the camarade who needs help");
+    	String camarade2 = createInputDialog("Solution", "Digit the name of the camarade from which the help is needed");
+    	graph.bfs(graph.getVertex(camarade1));
+    	int res = graph.getVertex(camarade2).getD()-1 ;
+    	Alert alert = new Alert(AlertType.INFORMATION);
+    	alert.setTitle("Solution");
+    	alert.setContentText("The amount of camarades between " + camarade1 + " and " + camarade2 + " is " + res);
+    	alert.showAndWait();
     }
 
 	@Override
@@ -130,6 +150,16 @@ public class TheMysteriousXController implements Initializable{
 		wormholeTooltip.setGraphic(new ImageView(wormholeImg));
 		addRelationBut.setTooltip(wormholeTooltip);
 		
+	    graphList.getSelectionModel().selectedItemProperty().addListener(
+	            (ObservableValue<? extends String> ov, String old_val, 
+	                String new_val) -> {
+	                	int endIndex = new_val.indexOf("-");
+	                    String vertex = new_val.substring(0, endIndex);
+	                    String vertex2 = createInputDialog("Add edge", "Add second vertex");
+	                    graph.addEdge(graph.getVertex(vertex), graph.getVertex(vertex2));
+	                    updateGUI();
+	        });
+		
 	}
 	
 	String createInputDialog(String title, String message) {
@@ -151,7 +181,10 @@ public class TheMysteriousXController implements Initializable{
 	void updateGUI() {
 		if(graph != null) {
 			graphList.getItems().clear();
-			graphList.getItems().add(graph.toString());
+			for(Vertex<String> v: graph.getVertices()) {
+				String s = v + "-> " +	graph.getAdjacent(v).toString();
+				graphList.getItems().add(s);
+			}
 		}
 	}
 

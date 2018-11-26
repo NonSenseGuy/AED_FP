@@ -32,7 +32,7 @@ public class Edge<T> implements Comparable<Edge<T>>{
 
 	@Override
 	public String toString() {
-		return "(" + v1 + "," + v2 + ")";
+		return "(" + v2 + "," + w + ")";
 	}
 
 	@Override
